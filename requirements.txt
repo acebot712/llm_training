@@ -16,8 +16,6 @@ bleach==6.1.0
 certifi==2024.7.4
 cffi==1.16.0
 charset-normalizer==3.3.2
-comm==0.2.2
-contourpy==1.2.1
 cycler==0.12.1
 datasets==2.20.0
 debugpy==1.8.2

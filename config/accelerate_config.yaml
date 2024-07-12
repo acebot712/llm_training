@@ -1,0 +1,6 @@
+compute_environment: LOCAL_MACHINE
+deepspeed_config_file: /home/ubuntu/abhijoy/model_compressor/config/deepspeed_config.json
+distributed_type: DEEPSPEED
+num_processes: 8
+mixed_precision: fp16
+use_cpu: false

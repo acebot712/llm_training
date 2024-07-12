@@ -24,35 +24,33 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Clear cache (if exists)
-        run: |
-          pip cache purge
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install black flake8 isort
-          pip install flash-attn
+          pip install -r requirements.txt
 
       - name: Run Black
-        run: |
-          black .
+        run: black .
 
       - name: Run isort
-        run: |
-          isort .
+        run: isort .
 
       - name: Check code formatting with Black
-        run: |
-          black --check .
+        run: black --check .
 
       - name: Sort imports with isort
-        run: |
-          isort --check-only .
+        run: isort --check-only .
 
       - name: Lint code with Flake8
-        run: |
-          flake8 .
+        run: flake8 .
 
   auto-format:
     runs-on: ubuntu-latest
@@ -61,30 +59,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}  # Ensure we checkout the PR branch
+          ref: ${{ github.head_ref }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.8'
 
-      - name: Clear cache (if exists)
-        run: |
-          pip cache purge
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install black isort
-          pip install flash-attn
+          pip install -r requirements.txt
 
       - name: Format code with Black
-        run: |
-          black .
+        run: black .
 
       - name: Sort imports with isort
-        run: |
-          isort .
+        run: isort .
 
       - name: Commit changes
         run: |
@@ -108,9 +107,13 @@ jobs:
         with:
           python-version: '3.8'
 
-      - name: Clear cache (if exists)
-        run: |
-          pip cache purge
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
@@ -118,5 +121,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run tests
-        run: |
-          pytest
+        run: pytest

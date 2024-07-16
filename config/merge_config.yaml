@@ -1,0 +1,13 @@
+slices:
+  - sources:
+      - model: "NousResearch/Llama-2-7b-chat-hf"
+        layer_range: [0, 22]
+      - model: "PY007/TinyLlama-1.1B-Chat-v0.1"
+        layer_range: [0, 22]
+      - model: "microsoft/Phi-3-mini-4k-instruct"
+        layer_range: [0, 22]
+merge_method: "dare_linear"
+base_model: "NousResearch/Llama-2-7b-chat-hf"
+parameters:
+  int8_mask: true
+dtype: "bfloat16"

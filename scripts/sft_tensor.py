@@ -67,8 +67,9 @@ def load_dataset():
 
 def prepare_trainer(model, tokenizer, train_dataset, eval_dataset):
     sft_config = SFTConfig(
+        run_name="mmlu_finetune"
         dataset_text_field="text",
-        output_dir="./outputs/sft",
+        output_dir="./outputs/sft_mmlu",
         bf16=True,
         seed=42,
         num_train_epochs=2,

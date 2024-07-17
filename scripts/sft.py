@@ -35,7 +35,7 @@ def initialize_model_and_tokenizer():
         )
         tokenizer = AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0", padding=True, truncation=True)
         tokenizer.pad_token = tokenizer.eos_token
-        tokenizer.padding_side = "left"
+        tokenizer.padding_side = "right"
         logger.info("Model and tokenizer initialized.")
         return model, tokenizer
     except Exception as e:
@@ -53,8 +53,9 @@ def load_dataset():
 
 def prepare_trainer(model, tokenizer, train_dataset, eval_dataset):
     sft_config = SFTConfig(
+        run_name="mmlu_finetune"
         dataset_text_field="text",
-        output_dir="./outputs/sft",
+        output_dir="./outputs/sft_mmlu",
         bf16=True,
         seed=42,
         num_train_epochs=2,

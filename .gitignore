@@ -823,3 +823,7 @@ outputs/
 wandb/
 evaluation_results/
 models/
+
+# Do not ignore scripts directory
+!scripts/
+scripts/MergeKit

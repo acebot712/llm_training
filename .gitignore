@@ -819,6 +819,7 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,pycharm+all,macos,data,python,jupyternotebooks,venv,virtualenv,archive,linux,windows
 data/
-mixtral/
 outputs/
 wandb/
+evaluation_results/
+models/

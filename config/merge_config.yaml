@@ -1,13 +1,16 @@
 slices:
   - sources:
-      - model: "NousResearch/Llama-2-7b-chat-hf"
-        layer_range: [0, 22]
-      - model: "PY007/TinyLlama-1.1B-Chat-v0.1"
-        layer_range: [0, 22]
-      - model: "microsoft/Phi-3-mini-4k-instruct"
-        layer_range: [0, 22]
-merge_method: "dare_linear"
-base_model: "NousResearch/Llama-2-7b-chat-hf"
-parameters:
-  int8_mask: true
-dtype: "bfloat16"
+      - model: microsoft/Phi-3-mini-4k-instruct
+        layer_range: [0, 21]
+        parameters:
+          weight: 0.7
+      - model: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+        layer_range: [0, 21]
+        parameters:
+          weight: 0.3
+  - sources:
+      - model: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+        layer_range: [22, 21]  # Since Phi-3-mini-4k-instruct has no more layers, use TinyLlama layers
+merge_method: passthrough
+dtype: float16
+tokenizer_source: union

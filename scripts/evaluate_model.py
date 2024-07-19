@@ -1,3 +1,15 @@
+"""
+Usage:
+To run the script with the configuration file:
+python script_name.py --config_file configs/evaluate_config.json
+
+To override specific parameters via CLI arguments:
+python script_name.py --config_file configs/evaluate_config.json --num_fewshot 5 --output_dir "custom_output_dir"
+
+If no config file is provided, all required arguments must be provided via the CLI:
+python script_name.py --model_name "TinyLlama/TinyLlama-1.1B-Chat-v1.0" --model_args '{"revision": "main", "dtype": "float", "parallelize": true}' --datasets "mmlu,hellaswag,boolq" --num_fewshot 0 --batch_size "auto:4" --device "cuda:7" --output_dir "./evaluation_results" --limit 1.0
+
+"""
 import json
 import os
 import argparse

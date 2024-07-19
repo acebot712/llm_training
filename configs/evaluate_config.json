@@ -1,0 +1,14 @@
+{
+    "model_name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "model_args": {
+        "revision": "main",
+        "dtype": "float",
+        "parallelize": true
+    },
+    "datasets": ["mmlu", "hellaswag", "boolq"],
+    "num_fewshot": 0,
+    "batch_size": "auto:4",
+    "device": "cuda:7",
+    "output_dir": "./evaluation_results",
+    "limit": null
+}

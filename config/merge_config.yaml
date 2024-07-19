@@ -1,16 +1,11 @@
+merge_method: linear
 slices:
   - sources:
-      - model: microsoft/Phi-3-mini-4k-instruct
-        layer_range: [0, 21]
-        parameters:
-          weight: 0.7
-      - model: TinyLlama/TinyLlama-1.1B-Chat-v1.0
-        layer_range: [0, 21]
-        parameters:
-          weight: 0.3
-  - sources:
-      - model: TinyLlama/TinyLlama-1.1B-Chat-v1.0
-        layer_range: [22, 21]  # Since Phi-3-mini-4k-instruct has no more layers, use TinyLlama layers
-merge_method: passthrough
+      - model: NousResearch/Llama-2-7b-chat-hf
+        layer_range: [0, 31]  # Adjusted to match the common layers
+      - model: /home/ubuntu/profiler/Downloaded_checkpoint_pintxo
+        layer_range: [0, 31]
+parameters:
+  weight: 0.5  # Merge with equal weight
 dtype: float16
-tokenizer_source: union
+tokenizer_source: NousResearch/Llama-2-7b-chat-hf

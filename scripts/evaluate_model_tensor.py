@@ -63,12 +63,12 @@ def evaluate_model(model_name, model_args, datasets, num_fewshot, batch_size, de
     return all_results
 
 # Configuration parameters
-model_name = "NousResearch/Llama-2-7b-chat-hf"
-model_args = {"revision": "main", "dtype": "float", "parallelize": True}
+model_name = "/home/ubuntu/profiler/compact/compact_Pintxo_1071_1000_supra3_no_gate_mpo_zero_98"
+model_args = {"revision": "main", "dtype": "float", "parallelize": False}
 datasets = ["mmlu", "hellaswag", "boolq"]  # Add your datasets here
 num_fewshot = 0
 batch_size = "auto:4"  # Set batch size to auto with recomputation
-device = "cuda:0"
+device = "cuda:7"
 output_dir = "./evaluation_results"
 limit = None
 

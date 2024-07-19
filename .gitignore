@@ -827,3 +827,4 @@ models/
 # Do not ignore scripts directory
 !scripts/
 scripts/MergeKit
+scripts/test.py

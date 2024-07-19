@@ -44,7 +44,7 @@ def initialize_model_and_tokenizer():
 
 def load_dataset():
     try:
-        dataset = load_from_disk("data/sft_mmlu")
+        dataset = load_from_disk("data/sft")
         logger.info("Dataset loaded from disk.")
         return dataset
     except Exception as e:
@@ -108,7 +108,7 @@ def main():
         model, tokenizer = initialize_model_and_tokenizer()
 
         dataset = load_dataset()
-        train_dataset = dataset["auxiliary_train"]
+        train_dataset = dataset["train"]
         eval_dataset = dataset["test"]
 
         trainer = prepare_trainer(model, tokenizer, train_dataset, eval_dataset)

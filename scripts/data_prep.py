@@ -80,11 +80,11 @@ def prepare_dataset(
 
 if __name__ == "__main__":
     dataset_name = "teknium/OpenHermes-2.5"
-    tokenizer_name = "microsoft/Phi-3-mini-4k-instruct"
+    tokenizer_name = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 
-    tokenizer = AutoTokenizer.from_pretrained("microsoft/Phi-3-mini-4k-instruct", padding=True, truncation=True)
+    tokenizer = AutoTokenizer.from_pretrained("TinyLlama/TinyLlama-1.1B-Chat-v1.0", padding=True, truncation=True)
     tokenizer.pad_token = tokenizer.eos_token
-    tokenizer.padding_side = "left"
+    tokenizer.padding_side = "right"
 
     prepared_dataset = prepare_dataset(dataset_name, tokenizer, sample_percentage=1)
 

@@ -12,7 +12,7 @@ accelerate launch --config_file "config/accelerate_config.yaml" scripts/sft.py -
 import os
 import logging
 import json
-from transformers import AutoModelForCausalLM, AutoTokenizer, DataCollatorForLanguageModeling, HfArgumentParser
+from transformers import AutoModelForCausalLM, AutoTokenizer, DataCollatorForLanguageModeling, HfArgumentParser, TrainerCallback, TrainingArguments
 from trl import SFTConfig, SFTTrainer
 from datasets import load_from_disk
 import wandb
@@ -75,6 +75,13 @@ class ScriptArguments:
         default=None, metadata={"help": "Enable gradient checkpointing."}
     )
 
+class WandBCallback(TrainerCallback):
+    def on_log(self, args, state, control, logs=None, **kwargs):
+        if not state.is_world_process_zero:
+            return
+        if logs is not None:
+            wandb.log(logs)
+
 def initialize_wandb(run_name):
     if os.getenv("LOCAL_RANK", "0") == "0":
         try:
@@ -93,6 +100,7 @@ def initialize_model_and_tokenizer(model_name):
             trust_remote_code=True,
             attn_implementation="flash_attention_2",
         )
+        model.config.use_cache = False
         tokenizer = AutoTokenizer.from_pretrained(model_name, padding=True, truncation=True)
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.padding_side = "right"
@@ -153,7 +161,8 @@ def prepare_trainer(model, tokenizer, train_dataset, eval_dataset, args):
             train_dataset=train_dataset,
             eval_dataset=eval_dataset,
             args=sft_config,
-            data_collator=data_collator
+            data_collator=data_collator,
+            callbacks=[WandBCallback()]
         )
         logger.info("SFTTrainer initialized with custom data collator.")
         return trainer

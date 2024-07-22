@@ -1,6 +1,6 @@
 """
 Usage:
-accelerate launch --config_file "/home/ubuntu/abhijoy/model_compressor/config/accelerate_config.yaml" scripts/sft_tensor.py
+accelerate launch --config_file "config/accelerate_config.yaml" scripts/sft_tensor.py
 """
 import os
 import logging

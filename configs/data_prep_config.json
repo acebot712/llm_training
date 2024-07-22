@@ -1,0 +1,7 @@
+{
+  "dataset_name": "teknium/OpenHermes-2.5",
+  "tokenizer_name": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+  "sample_percentage": 1.0,
+  "split_ratio": 0.2,
+  "output_dir": "data/sft"
+}

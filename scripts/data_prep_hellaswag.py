@@ -8,8 +8,12 @@ load_dotenv()
 
 def load_and_split_dataset(dataset_name):
     try:
-        dataset = load_dataset(dataset_name, "all")
-        return dataset
+        dataset = load_dataset(dataset_name, split=['train', 'validation', 'test'])
+        return DatasetDict({
+            "train": dataset[0],
+            "validation": dataset[1],
+            "test": dataset[2]
+        })
     except Exception as e:
         print(f"Error loading dataset: {e}")
         raise
@@ -29,7 +33,7 @@ def sample_dataset(dataset_dict, percentage=0.05):
 
 def format_examples(example):
     try:
-        example["text"] = f"### Question: {example['question']}\n ### Answer: {example['answer']}"
+        example["text"] = f"### Context: {example['ctx']}\n### Options: {', '.join(example['endings'])}\n### Label: {example.get('label', 'N/A')}"
     except Exception as e:
         print(f"Error formatting example: {e}")
         raise
@@ -50,7 +54,7 @@ def prepare_dataset(dataset_name, sample_percentage=0.05):
     return formatted_dataset
 
 if __name__ == "__main__":
-    dataset_name = "cais/mmlu"
+    dataset_name = "Rowan/hellaswag"
     tokenizer_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, padding=True, truncation=True)
@@ -61,8 +65,8 @@ if __name__ == "__main__":
 
     print(prepared_dataset)
     # Save the processed dataset to disk
-    prepared_dataset.save_to_disk("data/sft_mmlu")
+    prepared_dataset.save_to_disk("data/sft_hellaswag")
     print("Dataset saved to disk.")
-    loaded_dataset = load_from_disk("data/sft_mmlu")
+    loaded_dataset = load_from_disk("data/sft_hellaswag")
     print("Dataset loaded from disk.")
     print(loaded_dataset)

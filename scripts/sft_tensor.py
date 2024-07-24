@@ -58,7 +58,7 @@ def initialize_model_and_tokenizer():
 
 def load_dataset():
     try:
-        dataset = load_from_disk("data/sft_openbookqa")
+        dataset = load_from_disk("data/sft_mmlu")
         logger.info("Dataset loaded from disk.")
         return dataset
     except Exception as e:
@@ -67,9 +67,9 @@ def load_dataset():
 
 def prepare_trainer(model, tokenizer, train_dataset, eval_dataset):
     sft_config = SFTConfig(
-        run_name="openbookqa_mixtral_tensor_finetune",
+        run_name="mmlu_mixtral_tensor_finetune",
         dataset_text_field="text",
-        output_dir="./outputs/sft_openbookqa",
+        output_dir="./outputs/sft_mmlu",
         bf16=True,
         seed=42,
         num_train_epochs=2,
@@ -122,8 +122,8 @@ def main():
         model, tokenizer = initialize_model_and_tokenizer()
 
         dataset = load_dataset()
-        train_dataset = dataset["train"]
-        eval_dataset = dataset["validation"]
+        train_dataset = dataset["auxiliary_train"]
+        eval_dataset = dataset["dev"]
 
         trainer = prepare_trainer(model, tokenizer, train_dataset, eval_dataset)
 

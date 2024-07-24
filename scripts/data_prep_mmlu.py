@@ -51,7 +51,7 @@ def prepare_dataset(dataset_name, sample_percentage=0.05):
 
 if __name__ == "__main__":
     dataset_name = "cais/mmlu"
-    tokenizer_name = "NousResearch/Llama-2-7b-chat-hf"
+    tokenizer_name = "mistralai/Mixtral-8x7B-Instruct-v0.1"
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, padding=True, truncation=True)
     tokenizer.pad_token = tokenizer.eos_token
@@ -61,8 +61,8 @@ if __name__ == "__main__":
 
     print(prepared_dataset)
     # Save the processed dataset to disk
-    prepared_dataset.save_to_disk("data/sft_mmlu_pintxos")
+    prepared_dataset.save_to_disk("data/sft_mmlu")
     print("Dataset saved to disk.")
-    loaded_dataset = load_from_disk("data/sft_mmlu_pintxos")
+    loaded_dataset = load_from_disk("data/sft_mmlu")
     print("Dataset loaded from disk.")
     print(loaded_dataset)

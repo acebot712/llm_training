@@ -206,7 +206,7 @@ class Mixtral8x7Tensor(MixtralForCausalLM):
         ):
             tensorized_layer = TensorizedLinearLayer(**arguments)
             attribute_path = convert_name_to_attribute_path(name)
-            print("Atribute_path------:", attribute_path)
+            # print("Atribute_path------:", attribute_path)
             exec(
                 f"self.{attribute_path} = tensorized_layer",
                 {},
@@ -224,40 +224,6 @@ class Mixtral8x7Tensor(MixtralForCausalLM):
         return super().forward(input_ids=input_ids, **kwargs)
 
 
-class Mixtral8x7Tensor_train(MixtralForCausalLM):
-    """
-    Tensorized Mixtral8x7b model with support for custom tensorized layers.
-    """
-
-    config_class = MixtralConfig
-
-    def __init__(self, config):
-        super().__init__(config)
-        self.tensorized_info = config.tensorized_layers_info
-        self.model_path = config.location
-
-        # Apply tensorized layers
-        for name, arguments in tqdm(
-            self.tensorized_info.items(), desc="Loading Tensorized Layers"
-        ):
-            tensorized_layer = TensorizedLinearLayer_t(**arguments)
-            attribute_path = convert_name_to_attribute_path(name)
-            print("Atribute_path------:", attribute_path)
-            exec(
-                f"self.{attribute_path} = tensorized_layer",
-                {},
-                {"self": self, "tensorized_layer": tensorized_layer},
-            )
-
-        # Update model weights
-        state_dict = {}
-        for file in os.listdir(self.model_path):
-            if file.endswith(".safetensors") or file.endswith(".bin"):
-                state_dict.update(load_state_dict(os.path.join(self.model_path, file)))
-        self.load_state_dict(state_dict, strict=False)
-
-    def forward(self, input_ids=None, **kwargs):
-        return super().forward(input_ids=input_ids, **kwargs)
 
 
 import os
@@ -352,4 +318,41 @@ class LlamaCausalLMTensor_train(LlamaForCausalLM):
             if file.endswith(".safetensors") or file.endswith(".bin"):
                 state_dict.update(load_state_dict(os.path.join(self.model_path, file)))
         self.model.load_state_dict(state_dict, strict=False)
+        
+        
+class Mixtral8x7Tensor_train(MixtralForCausalLM):
+    """
+    Tensorized Mixtral8x7b model with support for custom tensorized layers.
+    """
+
+    config_class = MixtralConfig
+
+    def __init__(self, config):
+        super().__init__(config)
+        self.tensorized_info = config.tensorized_layers_info
+        self.model_path = config.location
+
+        # Apply tensorized layers
+        for name, arguments in tqdm(
+            self.tensorized_info.items(), desc="Loading Tensorized Layers"
+        ):
+            tensorized_layer = TensorizedLinearLayer_t(**arguments)
+            attribute_path = convert_name_to_attribute_path(name)
+            print("Atribute_path------:", attribute_path)
+            exec(
+                f"self.{attribute_path} = tensorized_layer",
+                {},
+                {"self": self, "tensorized_layer": tensorized_layer},
+            )
+
+        # Update model weights
+        state_dict = {}
+        for file in os.listdir(self.model_path):
+            if file.endswith(".safetensors") or file.endswith(".bin"):
+                state_dict.update(load_state_dict(os.path.join(self.model_path, file)))
+        self.load_state_dict(state_dict, strict=False)
+
+    def forward(self, input_ids=None, **kwargs):
+        return super().forward(input_ids=input_ids, **kwargs)
+
         self.model = self.model.model

@@ -1,15 +1,15 @@
 """
 Usage:
-accelerate launch --config_file "config/accelerate_config.yaml" scripts/sft_tensor.py
+accelerate launch --config_file "configs/accelerate_config.yaml" scripts/sft_tensor.py
 """
 import os
 import logging
-from transformers import AutoModelForCausalLM, AutoTokenizer, DataCollatorForLanguageModeling
+from transformers import AutoTokenizer, DataCollatorForLanguageModeling
 from trl import SFTConfig, SFTTrainer
 from datasets import load_from_disk
 import wandb
 from dotenv import load_dotenv
-from model_loader import LlamaCausalLMTensor, LlamaCausalLMTensor_train
+from model_loader import LlamaCausalLMTensor, Mixtral8x7Tensor
 
 # Load environment variables
 load_dotenv()
@@ -28,9 +28,9 @@ def initialize_wandb():
 
 def load_model(model_location):
     print(model_location)
-    if "train" in model_location:
-        print("INSIDE IF")
-        model = LlamaCausalLMTensor_train.from_pretrained(model_location)
+    if "compressed_mixtral" in model_location:
+        print("INSIDE ELIF")
+        model = Mixtral8x7Tensor.from_pretrained(model_location)
     else:
         print("INSIDE ELSE")
         model = LlamaCausalLMTensor.from_pretrained(model_location)
@@ -39,7 +39,7 @@ def load_model(model_location):
 
 def initialize_model_and_tokenizer():
     try:
-        model = load_model("/home/ubuntu/profiler/Downloaded_checkpoint_pintxo")
+        model = load_model("/home/ubuntu/llm_training/models/compressed_mixtral_8x7b_92")
         # model = AutoModelForCausalLM.from_pretrained(
         #     "NousResearch/Llama-2-7b-chat-hf",
         #     torch_dtype="auto",
@@ -47,7 +47,7 @@ def initialize_model_and_tokenizer():
         #     attn_implementation="flash_attention_2",
         #     local_files_only=True
         # )
-        tokenizer = AutoTokenizer.from_pretrained("NousResearch/Llama-2-7b-chat-hf", padding=True, truncation=True)
+        tokenizer = AutoTokenizer.from_pretrained("mistralai/Mixtral-8x7B-Instruct-v0.1", padding=True, truncation=True)
         tokenizer.pad_token = tokenizer.eos_token
         tokenizer.padding_side = "right"
         logger.info("Model and tokenizer initialized.")
@@ -58,7 +58,7 @@ def initialize_model_and_tokenizer():
 
 def load_dataset():
     try:
-        dataset = load_from_disk("data/sft_mmlu_pintxos")
+        dataset = load_from_disk("data/sft_openbookqa")
         logger.info("Dataset loaded from disk.")
         return dataset
     except Exception as e:
@@ -67,9 +67,9 @@ def load_dataset():
 
 def prepare_trainer(model, tokenizer, train_dataset, eval_dataset):
     sft_config = SFTConfig(
-        run_name="mmlu_finetune",
+        run_name="openbookqa_mixtral_tensor_finetune",
         dataset_text_field="text",
-        output_dir="./outputs/sft_mmlu",
+        output_dir="./outputs/sft_openbookqa",
         bf16=True,
         seed=42,
         num_train_epochs=2,
@@ -122,8 +122,8 @@ def main():
         model, tokenizer = initialize_model_and_tokenizer()
 
         dataset = load_dataset()
-        train_dataset = dataset["auxiliary_train"]
-        eval_dataset = dataset["test"]
+        train_dataset = dataset["train"]
+        eval_dataset = dataset["validation"]
 
         trainer = prepare_trainer(model, tokenizer, train_dataset, eval_dataset)
 

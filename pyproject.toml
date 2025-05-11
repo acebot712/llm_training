@@ -6,3 +6,35 @@ skip-string-normalization = true
 [tool.isort]
 profile = "black"
 line_length = 88
+
+[project]
+name = "llm_training"
+version = "0.1.0"
+description = "A modular framework for LLM data prep, training, evaluation, and compression."
+authors = ["Abhijoy Sarkar <abhijoysarkar@example.com>"]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "accelerate==0.32.1",
+    "datasets==2.20.0",
+    "deepspeed==0.14.4",
+    "einops==0.8.0",
+    "ipywidgets==8.1.3",
+    "lm_eval==0.4.3",
+    "matplotlib==3.9.1",
+    "mpi4py==3.1.6",
+    "python-dotenv==1.0.1",
+    "transformers==4.42.4",
+    "trl==0.9.6",
+    "wandb==0.17.4",
+    "wheel==0.43.0",
+    "hydra-core==1.3.2",
+    "typer==0.12.3",
+    "pydantic==2.7.1",
+    "pytest==8.2.1",
+    "mkdocs==1.5.3",
+    "mkdocs-material==9.5.21"
+]
+
+[project.scripts]
+llm-train = "llm_training.cli:app"

@@ -1,0 +1,6 @@
+site_name: LLM Training
+nav:
+  - Home: index.md
+  - Package: package.md
+  - CLI: cli.md
+docs_dir: docs 

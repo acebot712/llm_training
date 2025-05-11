@@ -828,3 +828,21 @@ models/
 !scripts/
 scripts/MergeKit
 scripts/test.py
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.venv/
+.env
+.mypy_cache/
+.pytest_cache/
+.DS_Store
+
+# Docs
+site/
+docs/site/

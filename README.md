@@ -4,14 +4,12 @@ This repository provides a modular, extensible framework for data preparation, f
 
 ## Key Features
 - Modular Python package: `llm_training`
-- Unified CLI: `llm-train` for all workflows
-- Hydra-based configuration system (YAML/CLI/env)
-- Extensible: add new datasets, models, or tasks via plugins
-- Robust logging, error handling, and progress bars
-- Unit/integration tests and CI/CD
-- Auto-generated documentation
-- Docker support for reproducibility
-- Community guidelines and changelog
+- Unified CLI: `llm-train` for data prep, training, and evaluation
+- Configuration via JSON/YAML files with OmegaConf
+- Support for tensorized model compression (Llama, Mixtral)
+- Integrated WandB logging for experiment tracking
+- Unit tests with pytest
+- MIT licensed with community guidelines
 
 ## Quickstart
 
@@ -21,41 +19,38 @@ This repository provides a modular, extensible framework for data preparation, f
    ```
 2. **Run data preparation:**
    ```sh
-   llm-train data-prep --config configs/data_prep_config.yaml
+   llm-train data-prep --config configs/data_prep_config.json
    ```
 3. **Fine-tune a model:**
    ```sh
-   llm-train train --config configs/sft_config.yaml
+   llm-train train --config configs/sft_config.json
    ```
 4. **Evaluate a model:**
    ```sh
-   llm-train eval --config configs/evaluate_config.yaml
+   llm-train eval --config configs/evaluate_config.json
    ```
-5. **Model compression:**
-   ```sh
-   llm-train compress --config configs/compress_config.yaml
-   ```
+
+For model compression, see the scripts in `scripts/compression/`.
 
 ## Configuration
-All workflows are configured via Hydra YAML files. See `configs/` for examples. Override any parameter via CLI:
-```sh
-llm-train train --config configs/sft_config.yaml model.learning_rate=1e-5
-```
+All workflows are configured via JSON or YAML files using OmegaConf. See `configs/` for examples. The config files specify model paths, hyperparameters, dataset paths, and training arguments.
 
-## Extending
-- Add new datasets, models, or tasks by registering them in the `llm_training.registry`.
-- See the developer docs in `docs/` for details.
+### Example Configs
+- `data_prep_config.json` - Dataset preparation configuration
+- `sft_config.json` - Supervised fine-tuning parameters
+- `evaluate_config.json` - Evaluation benchmark settings
+- `accelerate_config.yaml` - Multi-GPU training with Accelerate
+
+## Project Structure
+- `llm_training/` - Main Python package with core functionality
+- `scripts/` - Standalone scripts for data prep and compression workflows
+- `configs/` - Configuration files for different workflows
+- `tests/` - Unit tests
 
 ## Testing
 Run all tests with:
 ```sh
 pytest
-```
-
-## Documentation
-Auto-generated docs are in `docs/` and can be built with:
-```sh
-mkdocs build
 ```
 
 ## Docker
@@ -75,9 +70,9 @@ See `CHANGELOG.md` for release history.
 
 If you find this work useful, please cite it as follows:
 ```bibtex
-@misc{your_repository,
+@misc{sarkar2024llmtraining,
   author = {Abhijoy Sarkar},
-  title = {LLM Training},
+  title = {LLM Training: A Modular Framework for Fine-tuning Large Language Models},
   year = {2024},
   publisher = {GitHub},
   journal = {GitHub Repository},

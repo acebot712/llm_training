@@ -11,7 +11,9 @@ line_length = 88
 name = "llm_training"
 version = "0.1.0"
 description = "A modular framework for LLM data prep, training, evaluation, and compression."
-authors = ["Abhijoy Sarkar <abhijoysarkar@example.com>"]
+authors = [
+    {name = "Abhijoy Sarkar", email = "abhijoy.sar@gmail.com"}
+]
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
@@ -35,6 +37,9 @@ dependencies = [
     "mkdocs==1.5.3",
     "mkdocs-material==9.5.21"
 ]
+
+[tool.setuptools]
+packages = ["llm_training"]
 
 [project.scripts]
 llm-train = "llm_training.cli:app"

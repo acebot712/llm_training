@@ -56,4 +56,12 @@ class Evaluator:
                 import json
                 json.dump({"results": all_results, "config": self.config}, f, indent=2)
         self.logger.info(f"Evaluation completed. Results saved to {results_file}")
-        return all_results 
+        return all_results
+
+
+def evaluate_model(config: Dict) -> Dict:
+    """
+    Evaluate an LLM using the provided config dict.
+    """
+    evaluator = Evaluator(config)
+    return evaluator.run() 
